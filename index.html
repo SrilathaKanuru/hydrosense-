@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HydroSense Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Firebase Auth Protection -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    const auth = firebase.auth();
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+
+  <header>
+    <h1>💧 HydroSense</h1>
+  </header>
+
+  <main>
+    <div class="card">🚿 Flow Rate: <span id="flowRate">--</span> L/min</div>
+    <div class="card">🛢️ Tank Level: <span id="tankLevel">--</span> %</div>
+    <div class="card">🌱 Moisture: <span id="moisture">--</span> %</div>
+    <div class="card">🚰 Motor: <button id="toggleMotor">OFF</button></div>
+    <div class="card">
+      📊 Show Usage Alert at
+      <input type="number" id="alertThreshold" min="1" max="100" value="90" /> %
+    </div>
+    <div class="alert" id="alertBox">⚠️ ALERT: Tank is FULL!</div>
+
+    <!-- Chart -->
+    <div class="card" style="width: 100%;">
+      <h3>📊 Daily Water Usage</h3>
+      <canvas id="usageChart" height="100"></canvas>
+    </div>
+
+    <!-- History -->
+    <div class="card" style="width: 100%;">
+      <h3>📅 Usage History</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Flow Rate</th>
+            <th>Tank Level</th>
+            <th>Moisture</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <p>💡 Tip: Use a bucket instead of a hose when washing vehicles.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
